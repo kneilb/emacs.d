@@ -1,0 +1,9 @@
+elpa
+semanticdb
+
+*.lock
+*.elc
+
+desktop
+ede-projects.el
+places
