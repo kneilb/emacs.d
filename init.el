@@ -9,6 +9,7 @@
  '(column-number-mode t)
  '(cscope-do-not-update-database t)
  '(custom-buffer-indent 4)
+ '(desktop-base-file-name "desktop")
  '(desktop-save (quote ask-if-new))
  '(desktop-save-mode t)
  '(ecb-compilation-buffer-names (quote (("*Calculator*") ("*vc*") ("*vc-diff*") ("*Apropos*") ("*Occur*") ("*shell*") ("\\*[cC]ompilation.*\\*" . t) ("\\*i?grep.*\\*" . t) ("*JDEE Compile Server*") ("*Help*") ("*Completions*") ("*Backtrace*") ("*Compile-log*") ("*bsh*") ("*Messages*") ("\\*Symref.*" . t))))
@@ -43,6 +44,15 @@
  ;; If there is more than one, they won't work right.
  '(default ((t (:inherit nil :stipple nil :background "white" :foreground "black" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 83 :width normal :foundry "unknown" :family "DejaVu Sans Mono")))))
 
+;; MELPA Stuff
+(require 'package)
+(add-to-list 'package-archives
+             '("melpa" . "http://melpa.org/packages/"))
+(when (< emacs-major-version 24)
+  ;; For important compatibility libraries like cl-lib
+  (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/")))
+(package-initialize)
+
 ;; Create my E/// style
 (defconst my-c-style
   '('gnu
@@ -59,13 +69,17 @@
 (c-add-style "E///" my-c-style)
 
 ;; xcscope intregration
-(require 'xcscope)
+;; (require 'xcscope)
+
+;; ido integration
+(setq ido-enable-flex-matching t)
+(setq ido-everywhere t)
+(ido-mode 1)
 
 ;; global integration
 ;; (autoload 'gtags-mode "gtags" "" t)
 
 ;; doxymacs integration
-
 (require 'doxymacs)
 (add-hook 'c-mode-common-hook 'doxymacs-mode)
 (defun my-doxymacs-font-lock-hook ()
@@ -74,10 +88,10 @@
 (add-hook 'font-lock-mode-hook 'my-doxymacs-font-lock-hook)
 
 ;; Load local stuff from .emacs.d
-(add-to-list 'load-path "~/.emacs.d/")
+;;(add-to-list 'load-path "~/.emacs.d/")
 
 ;; Espresso mode integration
-(autoload #'espresso-mode "espresso" "Start espresso-mode" t)
+(autoload 'espresso-mode "espresso" "Start espresso-mode" t)
 (add-to-list 'auto-mode-alist '("\\.js\\'" . espresso-mode))
 (add-to-list 'auto-mode-alist '("\\.json\\'" . espresso-mode))
 
@@ -95,20 +109,13 @@
       (list (format "%s %%S: %%j " (system-name))
             '(buffer-file-name "%f" (dired-directory dired-directory "%b"))))
 
-;; Macros
-(fset 'git-prepare-commit "\C-d\C-d\C-n")
-
-;; Key bindings
-(global-set-key (kbd "C-x r c") 'clear-rectangle)
-(global-set-key (kbd "C-x g") 'git-prepare-commit)
-
 ;; use nxml mode for xml, xsd, etc
 ;; (fset 'xml-mode 'nxml-mode)
-(defalias 'xml-mode 'nxml-mode)
+;; (defalias 'xml-mode 'nxml-mode)
 ;;(fset 'html-mode 'nxml-mode)
 
 ;; Make .h files always open as C++
-(add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
+;; (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
 
 ;; Window freezing mods
 (defadvice pop-to-buffer (before cancel-other-window first)
@@ -137,28 +144,21 @@
 
 ;; Enable CEDET
 ;;(load-file "~/.emacs.d/cedet-1.0/common/cedet.el")
-;;(global-ede-mode t)
 ;;(semantic-load-enable-gaudy-code-helpers)
 ;;(require 'semantic-ia)
 
 (global-ede-mode 1)
 (semantic-mode 1)
-;;(require 'semantic/sb)
 
 (global-semantic-stickyfunc-mode 1)
 (global-semantic-idle-completions-mode 1)
+(global-semantic-idle-summary-mode 1)
 (global-semantic-decoration-mode 1)
 (global-semantic-highlight-func-mode 1)
 ;;(global-semantic-show-unmatched-syntax-mode 1)
 
-;; Enable ECB (requires CEDET)
-;;(add-to-list 'load-path "~/.emacs.d/ecb-snap")
-(require 'ecb)
-
-;; Enable go-mode
-(add-to-list 'load-path "~/.emacs.d/go-mode.el")
-(require 'go-mode-autoloads)
-
+;; Needed for ECB
+(setq stack-trace-on-error t)
 
 ;; Markdown mode (from emacs-goodies-el)
 (autoload 'markdown-mode "markdown-mode"
@@ -166,6 +166,10 @@
 (add-to-list 'auto-mode-alist '("\\.text\\'" . markdown-mode))
 (add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
 (add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
+
+;; Key bindings
+(global-set-key (kbd "C-x r c") 'clear-rectangle)
+(global-set-key (kbd "C-x g") 'magit-status)
 
 ;; Enable disabled features
 (put 'downcase-region 'disabled nil)
