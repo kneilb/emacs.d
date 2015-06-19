@@ -24,9 +24,12 @@
  '(indent-tabs-mode nil)
  '(indicate-buffer-boundaries (quote ((top . left) (bottom . right))))
  '(indicate-empty-lines t)
+ '(mouse-yank-at-point t)
  '(nxml-attribute-indent 4)
  '(nxml-child-indent 4)
  '(nxml-outline-child-indent 4)
+ '(require-final-newline t)
+ '(save-interprogram-paste-before-kill t)
  '(save-place t nil (saveplace))
  '(server-mode t)
  '(sgml-basic-offset 4)
@@ -36,7 +39,9 @@
  '(tool-bar-mode nil)
  '(uniquify-buffer-name-style (quote forward) nil (uniquify))
  '(use-dialog-box nil)
- '(x-select-enable-clipboard t))
+ '(visible-bell t)
+ '(x-select-enable-clipboard t)
+ '(x-select-enable-primary t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -67,12 +72,6 @@
     )
   "E/// C Programming Style")
 (c-add-style "E///" my-c-style)
-
-;; xcscope intregration
-;; (require 'xcscope)
-
-;; global integration
-;; (autoload 'gtags-mode "gtags" "" t)
 
 ;; doxymacs integration
 (require 'doxymacs)
@@ -138,7 +137,6 @@
 (global-semantic-highlight-func-mode 1)
 ;;(global-semantic-show-unmatched-syntax-mode 1)
 
-
 ;; Stuff I want, nicked from better-defaults
 (autoload 'zap-up-to-char "misc"
   "Kill up to, but not including ARGth occurrence of CHAR." t)
@@ -158,15 +156,8 @@
 ;;(global-set-key (kbd "C-M-s") 'isearch-forward)
 ;;(global-set-key (kbd "C-M-r") 'isearch-backward)
 
-(show-paren-mode 1)
-(setq-default indent-tabs-mode nil)
-(setq x-select-enable-clipboard t
-      x-select-enable-primary t
-      save-interprogram-paste-before-kill t
+(setq x-select-enable-primary t
       apropos-do-all t
-      mouse-yank-at-point t
-      require-final-newline t
-      visible-bell t
       load-prefer-newer t
       ediff-window-setup-function 'ediff-setup-windows-plain
       save-place-file (concat user-emacs-directory "places")
@@ -195,16 +186,31 @@
 (setq projectile-completion-system 'helm)
 (helm-projectile-on)
 
-;; Enable helm-cscope-mode
-(add-hook 'c-mode-hook 'helm-cscope-mode)
-(add-hook 'c++-mode-hook 'helm-cscope-mode)
-;; Set key bindings
-(eval-after-load "helm-cscope"
-  '(progn
-     (define-key helm-cscope-mode-map (kbd "C-c s s") 'helm-cscope-find-this-symbol)
-     (define-key helm-cscope-mode-map (kbd "C-c s g") 'helm-cscope-find-global-definition)
-     (define-key helm-cscope-mode-map (kbd "C-c s c") 'helm-cscope-find-calling-this-funtcion)
-     (define-key helm-cscope-mode-map (kbd "C-c s C") 'helm-cscope-find-called-function)))
+;; Helm Gtags
+
+(setq
+ helm-gtags-ignore-case t
+ helm-gtags-auto-update t
+ helm-gtags-use-input-at-cursor t
+ helm-gtags-pulse-at-cursor t
+ helm-gtags-prefix-key "\C-cg"
+ helm-gtags-suggested-key-mapping t
+ )
+
+(require 'helm-gtags)
+;; Enable helm-gtags-mode
+(add-hook 'dired-mode-hook 'helm-gtags-mode)
+(add-hook 'eshell-mode-hook 'helm-gtags-mode)
+(add-hook 'c-mode-hook 'helm-gtags-mode)
+(add-hook 'c++-mode-hook 'helm-gtags-mode)
+(add-hook 'asm-mode-hook 'helm-gtags-mode)
+
+(define-key helm-gtags-mode-map (kbd "C-c g a") 'helm-gtags-tags-in-this-function)
+(define-key helm-gtags-mode-map (kbd "C-j") 'helm-gtags-select)
+(define-key helm-gtags-mode-map (kbd "M-.") 'helm-gtags-dwim)
+(define-key helm-gtags-mode-map (kbd "M-,") 'helm-gtags-pop-stack)
+(define-key helm-gtags-mode-map (kbd "C-c <") 'helm-gtags-previous-history)
+(define-key helm-gtags-mode-map (kbd "C-c >") 'helm-gtags-next-history)
 
 ;; Needed for ECB
 (setq stack-trace-on-error t)
