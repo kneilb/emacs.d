@@ -212,6 +212,10 @@
 (define-key helm-gtags-mode-map (kbd "C-c <") 'helm-gtags-previous-history)
 (define-key helm-gtags-mode-map (kbd "C-c >") 'helm-gtags-next-history)
 
+;; Magit
+(setq magit-last-seen-setup-instructions "1.4.0")
+(global-set-key (kbd "C-x g") 'magit-status)
+
 ;; Needed for ECB
 (setq stack-trace-on-error t)
 
@@ -224,7 +228,6 @@
 
 ;; Key bindings
 (global-set-key (kbd "C-x r c") 'clear-rectangle)
-(global-set-key (kbd "C-x g") 'magit-status)
 
 ;; Enable disabled features
 (put 'downcase-region 'disabled nil)
