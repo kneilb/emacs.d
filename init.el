@@ -4,10 +4,10 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(ansi-color-for-comint-mode t)
+ '(apropos-do-all t)
  '(c-basic-offset 4)
  '(c-offsets-alist (quote ((brace-list-open . 0) (substatement-open . 0) (extern-lang-open . 0) (extern-lang-close . 0) (inextern-lang . 0) (innamespace . 0))))
  '(column-number-mode t)
- '(cscope-do-not-update-database t)
  '(custom-buffer-indent 4)
  '(desktop-base-file-name "desktop")
  '(desktop-save (quote ask-if-new))
@@ -19,8 +19,11 @@
  '(ecb-options-version "2.40")
  '(ecb-tip-of-the-day nil)
  '(ecb-toggle-layout-sequence (quote ("left2" "left11")))
+ '(gdb-many-windows t)
  '(global-auto-revert-mode nil)
+ '(grep-find-ignored-directories (quote ("SCCS" "RCS" "CVS" "MCVS" ".svn" ".git" ".hg" ".bzr" "_MTN" "_darcs" "{arch}" "output")))
  '(grep-highlight-matches t)
+ '(helm-buffer-max-length nil)
  '(indent-tabs-mode nil)
  '(indicate-buffer-boundaries (quote ((top . left) (bottom . right))))
  '(indicate-empty-lines t)
@@ -31,6 +34,9 @@
  '(require-final-newline t)
  '(save-interprogram-paste-before-kill t)
  '(save-place t nil (saveplace))
+ '(scroll-bar-mode nil)
+ '(semantic-default-submodes (quote (global-semantic-highlight-func-mode global-semantic-decoration-mode global-semantic-stickyfunc-mode global-semantic-idle-completions-mode global-semantic-idle-scheduler-mode global-semanticdb-minor-mode global-semantic-idle-summary-mode)))
+ '(semantic-mode t)
  '(server-mode t)
  '(sgml-basic-offset 4)
  '(show-paren-mode t)
@@ -73,7 +79,7 @@
   "E/// C Programming Style")
 (c-add-style "E///" my-c-style)
 
-;; doxymacs integration
+;; doxymacs integration (Ubuntu package = doxymacs)
 (require 'doxymacs)
 (add-hook 'c-mode-common-hook 'doxymacs-mode)
 (defun my-doxymacs-font-lock-hook ()
@@ -81,21 +87,13 @@
       (doxymacs-font-lock)))
 (add-hook 'font-lock-mode-hook 'my-doxymacs-font-lock-hook)
 
-;; Put file name or buffer name in frame title
-;; (setq frame-title-format '(buffer-file-name "%f" ("%b")))
-
 ;; Put full file name in frame title
 (setq frame-title-format
       (list (format "%s %%S: %%j " (system-name))
             '(buffer-file-name "%f" (dired-directory dired-directory "%b"))))
 
-;; use nxml mode for xml, xsd, etc
-;; (fset 'xml-mode 'nxml-mode)
-;; (defalias 'xml-mode 'nxml-mode)
-;;(fset 'html-mode 'nxml-mode)
-
 ;; Make .h files always open as C++
-;; (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
+(add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
 
 ;; Window freezing mods
 (defadvice pop-to-buffer (before cancel-other-window first)
@@ -116,27 +114,6 @@
    (current-buffer)))
 (global-set-key [pause] 'toggle-window-dedicated)
 
-;; Forward yanking, bound to M-Y (iso M-y)
-(defun yank-pop-forwards (arg)
-      (interactive "p")
-      (yank-pop (- arg)))
-(global-set-key "\M-Y" 'yank-pop-forwards) ; M-Y (Meta-Shift-Y)
-
-;; Enable CEDET
-;;(load-file "~/.emacs.d/cedet-1.0/common/cedet.el")
-;;(semantic-load-enable-gaudy-code-helpers)
-;;(require 'semantic-ia)
-
-(global-ede-mode 1)
-(semantic-mode 1)
-
-(global-semantic-stickyfunc-mode 1)
-(global-semantic-idle-completions-mode 1)
-(global-semantic-idle-summary-mode 1)
-(global-semantic-decoration-mode 1)
-(global-semantic-highlight-func-mode 1)
-;;(global-semantic-show-unmatched-syntax-mode 1)
-
 ;; Stuff I want, nicked from better-defaults
 (autoload 'zap-up-to-char "misc"
   "Kill up to, but not including ARGth occurrence of CHAR." t)
@@ -156,14 +133,10 @@
 ;;(global-set-key (kbd "C-M-s") 'isearch-forward)
 ;;(global-set-key (kbd "C-M-r") 'isearch-backward)
 
-(setq x-select-enable-primary t
-      apropos-do-all t
-      load-prefer-newer t
-      ediff-window-setup-function 'ediff-setup-windows-plain
-      save-place-file (concat user-emacs-directory "places")
-      backup-directory-alist `(("." . ,(concat user-emacs-directory
-                                               "backups"))))
-
+(setq load-prefer-newer t)
+(setq ediff-window-setup-function 'ediff-setup-windows-plain)
+(setq save-place-file (concat user-emacs-directory "places"))
+(setq backup-directory-alist `(("." . ,(concat user-emacs-directory "backups"))))
 
 ;; Helm
 (require 'helm)
@@ -178,6 +151,7 @@
 (global-set-key (kbd "M-y")     #'helm-show-kill-ring)
 (global-set-key (kbd "M-s o")   #'helm-swoop)
 (global-set-key (kbd "M-s /")   #'helm-multi-swoop)
+(global-set-key (kbd "C-c <SPC>") #'helm-all-mark-rings)
 
 (helm-mode t)
 
@@ -187,7 +161,6 @@
 (helm-projectile-on)
 
 ;; Helm Gtags
-
 (setq
  helm-gtags-ignore-case t
  helm-gtags-auto-update t
@@ -198,7 +171,6 @@
  )
 
 (require 'helm-gtags)
-;; Enable helm-gtags-mode
 (add-hook 'dired-mode-hook 'helm-gtags-mode)
 (add-hook 'eshell-mode-hook 'helm-gtags-mode)
 (add-hook 'c-mode-hook 'helm-gtags-mode)
