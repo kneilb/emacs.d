@@ -114,12 +114,12 @@
 (c-add-style "E///" my-c-style)
 
 ;; doxymacs integration (Ubuntu package = doxymacs)
-(require 'doxymacs)
-(add-hook 'c-mode-common-hook 'doxymacs-mode)
-(defun my-doxymacs-font-lock-hook ()
-  (if (or (eq major-mode 'c-mode) (eq major-mode 'c++-mode) (eq major-mode 'java-mode))
-      (doxymacs-font-lock)))
-(add-hook 'font-lock-mode-hook 'my-doxymacs-font-lock-hook)
+;;(require 'doxymacs)
+;;(add-hook 'c-mode-common-hook 'doxymacs-mode)
+;;(defun my-doxymacs-font-lock-hook ()
+;;  (if (or (eq major-mode 'c-mode) (eq major-mode 'c++-mode) (eq major-mode 'java-mode))
+;;      (doxymacs-font-lock)))
+;;(add-hook 'font-lock-mode-hook 'my-doxymacs-font-lock-hook)
 
 ;; Put full file name in frame title
 (setq frame-title-format
@@ -201,7 +201,7 @@
  helm-gtags-use-input-at-cursor t
  helm-gtags-pulse-at-cursor t
  helm-gtags-prefix-key "\C-cg"
- helm-gtags-suggested-key-mapping t
+ helm-gtags-suggested-key-mapping nil
  )
 
 (require 'helm-gtags)
