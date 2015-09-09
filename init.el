@@ -188,6 +188,9 @@
 (setq magit-last-seen-setup-instructions "1.4.0")
 (global-set-key (kbd "C-x g") 'magit-status)
 
+;; Nyan
+(nyan-mode t)
+
 ;; Needed for ECB
 (setq stack-trace-on-error t)
 
