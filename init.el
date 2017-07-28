@@ -63,10 +63,15 @@
  '(nxml-attribute-indent 4)
  '(nxml-child-indent 4)
  '(nxml-outline-child-indent 4)
+ '(package-selected-packages
+   (quote
+    (groovy-mode lua-mode popwin nyan-mode helm-swoop helm-pydoc helm-projectile helm-gtags go-mode gitignore-mode function-args es-windows es-lib dummy-h-mode auctex)))
  '(require-final-newline t)
  '(save-interprogram-paste-before-kill t)
  '(save-place t nil (saveplace))
  '(scroll-bar-mode nil)
+ '(select-enable-clipboard t)
+ '(select-enable-primary t)
  '(semantic-default-submodes
    (quote
     (global-semantic-highlight-func-mode global-semantic-decoration-mode global-semantic-stickyfunc-mode global-semantic-idle-completions-mode global-semantic-idle-scheduler-mode global-semanticdb-minor-mode global-semantic-idle-summary-mode)))
@@ -79,9 +84,7 @@
  '(tool-bar-mode nil)
  '(uniquify-buffer-name-style (quote forward) nil (uniquify))
  '(use-dialog-box nil)
- '(visible-bell t)
- '(x-select-enable-clipboard t)
- '(x-select-enable-primary t))
+ '(visible-bell t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -91,8 +94,9 @@
 
 ;; MELPA Stuff
 (require 'package)
-(add-to-list 'package-archives
-             '("melpa" . "http://melpa.org/packages/"))
+;; (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
+(add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/"))
+
 (when (< emacs-major-version 24)
   ;; For important compatibility libraries like cl-lib
   (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/")))
@@ -220,11 +224,11 @@
 (define-key helm-gtags-mode-map (kbd "C-c >") 'helm-gtags-next-history)
 
 ;; Magit
-(setq magit-last-seen-setup-instructions "1.4.0")
-(global-set-key (kbd "C-x g") 'magit-status)
+;;(setq magit-last-seen-setup-instructions "1.4.0")
+;;(global-set-key (kbd "C-x g") 'magit-status)
 
 ;; Nyan
-(nyan-mode t)
+;; (nyan-mode t)
 
 ;; Needed for ECB
 (setq stack-trace-on-error t)
