@@ -60,15 +60,16 @@
  '(indicate-buffer-boundaries (quote ((top . left) (bottom . right))))
  '(indicate-empty-lines t)
  '(mouse-yank-at-point t)
+ '(normal-erase-is-backspace t)
  '(nxml-attribute-indent 4)
  '(nxml-child-indent 4)
  '(nxml-outline-child-indent 4)
  '(package-selected-packages
    (quote
-    (groovy-mode lua-mode popwin nyan-mode helm-swoop helm-pydoc helm-projectile helm-gtags go-mode gitignore-mode function-args es-windows es-lib dummy-h-mode auctex)))
+    (typescript-mode yaml-mode csharp-mode markdown-mode groovy-mode lua-mode popwin nyan-mode helm-swoop helm-pydoc helm-projectile helm-gtags go-mode gitignore-mode function-args es-windows es-lib dummy-h-mode auctex)))
  '(require-final-newline t)
  '(save-interprogram-paste-before-kill t)
- '(save-place t nil (saveplace))
+ '(save-place-mode t nil (saveplace))
  '(scroll-bar-mode nil)
  '(select-enable-clipboard t)
  '(select-enable-primary t)
@@ -84,6 +85,7 @@
  '(tool-bar-mode nil)
  '(uniquify-buffer-name-style (quote forward) nil (uniquify))
  '(use-dialog-box nil)
+ '(vc-handled-backends nil)
  '(visible-bell t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -222,6 +224,10 @@
 (define-key helm-gtags-mode-map (kbd "M-,") 'helm-gtags-pop-stack)
 (define-key helm-gtags-mode-map (kbd "C-c <") 'helm-gtags-previous-history)
 (define-key helm-gtags-mode-map (kbd "C-c >") 'helm-gtags-next-history)
+
+;; Helm ripgrep integration
+(setq helm-grep-ag-command "rg --color=always --colors 'match:fg:black' --colors 'match:bg:yellow' --smart-case --no-heading --line-number %s %s %s")
+(setq helm-grep-ag-pipe-cmd-switches '("--colors 'match:fg:black'" "--colors 'match:bg:yellow'"))
 
 ;; Magit
 ;;(setq magit-last-seen-setup-instructions "1.4.0")
