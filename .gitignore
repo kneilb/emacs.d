@@ -1,12 +1,16 @@
-elpa
-eshell
-semanticdb
+eln-cache/
+elpa/
+eshell/
+semanticdb/
+transient/
 
 *.lock
 *.elc
 
 desktop
 ede-projects.el
+history
 places
+projects
 projectile-bookmarks.eld
 projectile.cache
